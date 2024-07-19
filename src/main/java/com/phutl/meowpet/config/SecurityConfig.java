@@ -1,5 +1,6 @@
 package com.phutl.meowpet.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -9,11 +10,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
-import com.phutl.meowpet.filter.JwtRequestFilter;
+import com.phutl.meowpet.filters.JwtRequestFilter;
 
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfiguration {
+@EnableRedisHttpSession
+public class SecurityConfig {
+
+        @Value("${api.prefix}")
+        private String apiPrefix;
 
         @Bean
         public JwtRequestFilter jwtRequestFilter() {
@@ -34,7 +40,9 @@ public class SecurityConfig extends WebSecurityConfiguration {
                                                                 .expiredUrl("/login?expired"))
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(authorize -> authorize
-                                                .requestMatchers("/authenticate").permitAll()
+                                                .requestMatchers(String.format("%users/register", apiPrefix),
+                                                                "%users/register", apiPrefix)
+                                                .permitAll()
                                                 .anyRequest().authenticated())
                                 .addFilterBefore(new JwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
                 return http.build();
