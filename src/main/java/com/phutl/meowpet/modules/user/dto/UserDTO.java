@@ -1,6 +1,7 @@
-package com.phutl.meowpet.user.dto;
+package com.phutl.meowpet.modules.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.phutl.meowpet.shared.common.Role;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -16,8 +17,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
+@Getter
 public class UserDTO {
     
     @JsonProperty("first_name")
@@ -49,12 +50,12 @@ public class UserDTO {
     @JsonProperty("date_of_birth")
     private Date dateOfBirth;
 
-    private List<String> roles;
+    private List<Role> roles;
 
     @JsonProperty("facebook_account_id")
-    private String facebookAccountId;
+    private int facebookAccountId;
 
     @JsonProperty("google_account_id")
-    private String googleAccountId;
+    private int googleAccountId;
 
 }

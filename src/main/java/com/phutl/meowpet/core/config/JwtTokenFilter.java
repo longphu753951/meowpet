@@ -1,4 +1,4 @@
-package com.phutl.meowpet.config;
+package com.phutl.meowpet.core.config;
 
 import java.io.IOException;
 

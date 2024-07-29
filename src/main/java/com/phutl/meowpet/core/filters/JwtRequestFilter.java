@@ -1,4 +1,4 @@
-package com.phutl.meowpet.filters;
+package com.phutl.meowpet.core.filters;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.phutl.meowpet.utils.JwtUtil;
+import com.phutl.meowpet.core.utils.JwtUtil;
 
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
