@@ -2,6 +2,7 @@ package com.phutl.meowpet.modules.user.imlp;
 
 import java.util.Optional;
 
+import java.util.List;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,7 +17,9 @@ import com.phutl.meowpet.modules.user.IUserService;
 import com.phutl.meowpet.modules.user.UserRepository;
 import com.phutl.meowpet.modules.user.dto.UserDTO;
 import com.phutl.meowpet.modules.user.dto.UserLoginDTO;
+import com.phutl.meowpet.shared.common.Role;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -29,11 +32,14 @@ public class UserService implements IUserService {
     private final AuthenticationManager authenticationManager;
 
     @Override
+    @Transactional
     public User createUser(UserDTO userDTO) {
         String email = userDTO.getEmail();
-        if (userRepository.ExistingByEmail(email)) {
+        if (userRepository.existsByEmail(email)) {
             throw new DataIntegrityViolationException("email has already exists");
         }
+
+        // Ensure roles are set, default to Role.USER if not provided
         // convert userDTO => user
         User newUser = User.builder()
                 .firstName(userDTO.getFirstName())

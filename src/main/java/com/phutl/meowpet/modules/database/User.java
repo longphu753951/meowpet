@@ -1,8 +1,6 @@
 package com.phutl.meowpet.modules.database;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,7 +11,6 @@ import com.phutl.meowpet.shared.common.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,15 +45,16 @@ public class User extends BaseEntity implements UserDetails {
     @Column(length = 200)
     private String address;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private List<Role> roles;
+    @Column(name = "role")
+    @Builder.Default
+    private Set<Role> roles = new HashSet<>();
 
-
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Column(name = "status", nullable = false, length = 20)
+    @Builder.Default
+    private String status = "ACTIVE";
 
     @Column(name = "facebook_account_id")
     private int facebookAccountId;
@@ -67,8 +65,8 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
-        for(Role role: roles) {
-            authorityList.add(new SimpleGrantedAuthority("ROLE_"+ role.name()));
+        for (Role role : roles) {
+            authorityList.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
         }
         return authorityList;
     }

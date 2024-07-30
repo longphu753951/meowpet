@@ -11,8 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.Date;
-import java.util.List;
-
+import java.util.Set;
 @Data
 @Builder
 @NoArgsConstructor
@@ -50,7 +49,7 @@ public class UserDTO {
     @JsonProperty("date_of_birth")
     private Date dateOfBirth;
 
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @JsonProperty("facebook_account_id")
     private int facebookAccountId;

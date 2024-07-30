@@ -17,6 +17,6 @@ import com.phutl.meowpet.modules.user.dto.UserLoginDTO;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    boolean ExistingByEmail(String email);
+    boolean existsByEmail(String email);
     Optional<User> findByEmail(String email);
 }

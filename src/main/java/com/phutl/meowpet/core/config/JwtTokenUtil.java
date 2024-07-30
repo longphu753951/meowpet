@@ -27,28 +27,29 @@ public class JwtTokenUtil {
     @Value("${jwt.secretKey}")
     private String secretKey;
 
+    private Key getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        if (keyBytes.length < 32) {
+            throw new IllegalArgumentException("The specified key byte array is not secure enough. It must be at least 256 bits (32 bytes) long.");
+        }
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
     public String generateToken(User user) {
-        // properties => claims
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", user.getEmail());
-
         try {
             String token = Jwts.builder()
                     .setClaims(claims)
                     .setSubject(user.getEmail())
                     .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000L))
-                    .signWith(getSignInKey(), SignatureAlgorithm.ES256)
+                    .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                     .compact();
             return token;
         } catch (Exception e) {
             System.out.println("Can't read JWT Token. Error: " + e.getMessage());
             return null;
         }
-    }
-
-    private Key getSignInKey() {
-        byte[] bytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(bytes);
     }
 
     private Claims extractAllClaims(String token) {
