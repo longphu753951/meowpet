@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.phutl.meowpet.modules.database.User;
@@ -66,9 +67,18 @@ public class JwtTokenUtil {
         return claimsResolver.apply(claims);
     }
 
+    public String extractEmail(String token) {
+        return this.extractClaim(token, Claims::getSubject);
+    }
+
     //check expiration
     private boolean isTokenExpired(String token) {
         Date expirationDate = this.extractClaim(token, Claims::getExpiration);
         return expirationDate.before(new Date());
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        String email = extractEmail(token);
+        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }

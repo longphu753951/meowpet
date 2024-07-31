@@ -1,7 +1,7 @@
 package com.phutl.meowpet.modules.database;
 
 import java.util.*;
-
+import java.time.LocalDateTime;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -62,11 +62,17 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "google_account_id")
     private int googleAccountId;
 
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+    @Column(name = "refresh_token_expiry")
+    private LocalDateTime refreshTokenExpiry;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
         for (Role role : roles) {
-            authorityList.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
+            authorityList.add(new SimpleGrantedAuthority(role.name()));
         }
         return authorityList;
     }

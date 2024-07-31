@@ -32,3 +32,5 @@ logging:
 jwt:
   expiration: 2592000
   secretKey: bongvamapladoibanthanbongmautrangconmapmaudenbongdammapvamapkhochuhu
+api:
+  prefix: /api/v1

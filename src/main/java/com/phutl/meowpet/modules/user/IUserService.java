@@ -8,4 +8,5 @@ import com.phutl.meowpet.modules.user.dto.UserLoginDTO;
 public interface IUserService {
     User createUser(UserDTO userDTO) throws Exception;
     String login(UserLoginDTO userLoginDTO) throws Exception;
+    String generateRefreshToken(UserLoginDTO userLoginDTO) throws Exception;
 }

@@ -2,8 +2,12 @@ package com.phutl.meowpet.modules.database;
 
 import java.time.LocalDateTime;
 
+import com.phutl.meowpet.shared.common.TokenType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,16 +33,18 @@ public class Token {
     @Column(name = "token", nullable = false, length = 255)
     private String token;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "token_type", nullable = false, length = 50)
-    private String tokenType;
+    private TokenType tokenType;
 
     @Column(name = "expiration_date")
     private LocalDateTime expirationDate;
 
-    private boolean revoke;
+    private boolean revoked;
     private boolean expired;
 
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
 }
+
