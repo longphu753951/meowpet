@@ -32,8 +32,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final String secretKey = "meowmeowmeowmeow";
-
     @Value("${api.prefix}")
     private String apiPrefix;
 
@@ -77,7 +75,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     }
 
-    private boolean isBypassToken(@Nonnull HttpServletRequest request) {
+    private boolean isBypassToken(@NonNull HttpServletRequest request) {
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
                 Pair.of(String.format("%s/products", apiPrefix), "GET"),
                 Pair.of(String.format("%s/categories", apiPrefix), "GET"),

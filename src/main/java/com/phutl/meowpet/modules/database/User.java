@@ -62,11 +62,6 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "google_account_id")
     private int googleAccountId;
 
-    @Column(name = "refresh_token")
-    private String refreshToken;
-
-    @Column(name = "refresh_token_expiry")
-    private LocalDateTime refreshTokenExpiry;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
