@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.phutl.meowpet.core.config.JwtTokenUtil;
+import com.phutl.meowpet.core.components.JwtTokenUtil;
 import com.phutl.meowpet.modules.auth.IAuthService;
 import com.phutl.meowpet.modules.database.Token;
 import com.phutl.meowpet.modules.database.User;

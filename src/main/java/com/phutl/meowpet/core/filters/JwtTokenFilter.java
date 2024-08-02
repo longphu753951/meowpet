@@ -1,4 +1,4 @@
-package com.phutl.meowpet.core.config;
+package com.phutl.meowpet.core.filters;
 
 import java.io.IOException;
 
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.lang.NonNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.phutl.meowpet.core.components.JwtTokenUtil;
 import com.phutl.meowpet.modules.database.User;
 
 import io.jsonwebtoken.Claims;
@@ -24,6 +25,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 
 //filter theo từng request một
@@ -58,7 +62,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             final String email = jwtTokenUtil.extractEmail(token);
             if (email != null && SecurityContextHolder.getContext().getAuthentication() != null) {
                 // Ép kiểu UserDetails sang User vì User implement UserDetails
-                User existingUser = (User)userDetailsService.loadUserByUsername(email);
+                User existingUser = (User) userDetailsService.loadUserByUsername(email);
                 if (jwtTokenUtil.validateToken(token, existingUser)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             existingUser,
@@ -77,13 +81,33 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private boolean isBypassToken(@NonNull HttpServletRequest request) {
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
+                //health check
+                Pair.of(String.format("%s/actuator/**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/healthcheck/**", apiPrefix), "GET"),
+
+
                 Pair.of(String.format("%s/products", apiPrefix), "GET"),
                 Pair.of(String.format("%s/categories", apiPrefix), "GET"),
                 Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
-                Pair.of(String.format("%s/users/login", apiPrefix), "POST"));
+                Pair.of(String.format("%s/users/login", apiPrefix), "POST")
+                );
+        
+        String requestPath = request.getServletPath();
+        String requestMethod = request.getMethod();
+
         for (Pair<String, String> bypassToken : bypassTokens) {
-            if (request.getServletPath()
-                    .contains(bypassToken.getFirst()) && request.getMethod().contains(bypassToken.getSecond())) {
+            String tokenPath = bypassToken.getFirst();
+            String tokenMethod = bypassToken.getSecond();
+            if(tokenPath.contains("**")) {
+                String regexPath = tokenPath.replace("**", ".*");
+                //Create a pattern to match the request path
+                Pattern pattern = Pattern.compile(regexPath);
+                Matcher matcher = pattern.matcher(request.getServletPath());
+                if(matcher.matches() && requestMethod.equals(tokenMethod)) {
+                    return true;
+                }
+            }
+            else if(requestPath.equals(tokenPath) && requestMethod.equals(tokenMethod)) {
                 return true;
             }
         }

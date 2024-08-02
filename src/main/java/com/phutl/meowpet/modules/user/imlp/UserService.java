@@ -13,7 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.phutl.meowpet.core.config.JwtTokenUtil;
+import com.phutl.meowpet.core.components.JwtTokenUtil;
 import com.phutl.meowpet.core.exceptions.DataNotFoundException;
 import com.phutl.meowpet.modules.database.User;
 import com.phutl.meowpet.modules.user.IUserService;
@@ -70,6 +70,14 @@ public class UserService implements IUserService {
         return userRepository.save(newUser);
     }
 
+    public User getUserByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            throw new DataNotFoundException("User not found");
+        }
+        return optionalUser.get();
+    }
+
     @Override
     public String login(UserLoginDTO userLoginDTO) throws Exception {
         Optional<User> optionalUser = userRepository.findByEmail(userLoginDTO.getUsername());
@@ -86,7 +94,7 @@ public class UserService implements IUserService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userLoginDTO.getUsername(), userLoginDTO.getPassword());
         authenticationManager.authenticate(authenticationToken);
-        return ResponseEntity.ok(this.jwtTokenUtil.generateToken(existingUser)).toString();
+        return this.jwtTokenUtil.generateToken(existingUser).toString();
     }
 
     @Override

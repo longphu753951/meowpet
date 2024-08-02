@@ -34,3 +34,12 @@ jwt:
   secretKey: bongvamapladoibanthanbongmautrangconmapmaudenbongdammapvamapkhochuhu
 api:
   prefix: /api/v1
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      base-path: /api/v1/actuator
+      exposure:
+        include: "health, info"

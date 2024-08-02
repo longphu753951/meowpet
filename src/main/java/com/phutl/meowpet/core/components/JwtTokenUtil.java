@@ -1,7 +1,6 @@
-package com.phutl.meowpet.core.config;
+package com.phutl.meowpet.core.components;
 
 import java.security.Key;
-import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +16,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 
@@ -38,13 +36,6 @@ public class JwtTokenUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private String generateSecretKey() {
-        SecureRandom random = new SecureRandom();
-        byte[] keyBytes = new byte[32];
-        random.nextBytes(keyBytes);
-        String secretKey = Encoders.BASE64.encode(keyBytes);
-        return secretKey;
-    }
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();

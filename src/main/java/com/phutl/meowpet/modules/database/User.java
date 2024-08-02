@@ -62,12 +62,11 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "google_account_id")
     private int googleAccountId;
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
         for (Role role : roles) {
-            authorityList.add(new SimpleGrantedAuthority(role.name()));
+            authorityList.add(new SimpleGrantedAuthority("ROLE_" + role.name().toUpperCase()));
         }
         return authorityList;
     }
