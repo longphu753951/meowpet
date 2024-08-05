@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/meowpetdb
     username: postgres
-    password: qwpo1234
+    password: 475632
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
