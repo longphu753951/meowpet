@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.phutl.meowpet.core.components.JwtTokenUtil;
 import com.phutl.meowpet.core.filters.JwtTokenFilter;
 import com.phutl.meowpet.modules.database.User;
+import com.phutl.meowpet.modules.token.impl.TokenService;
 import com.phutl.meowpet.modules.user.dto.UserDTO;
 import com.phutl.meowpet.modules.user.dto.UserLoginDTO;
 import com.phutl.meowpet.modules.user.imlp.UserService;
@@ -36,6 +37,9 @@ public class UserController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private TokenService tokenService;
     
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
@@ -59,6 +63,8 @@ public class UserController {
         try {
             String token = userService.login(userLoginDTO);
             String userAgent = request.getHeader("User-Agent");
+            User user = userService.getUserByEmail(userLoginDTO.getUsername());
+            tokenService.addToken(user, token, isMobileDevice(request));
             return ResponseEntity.ok(token);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -78,4 +84,8 @@ public class UserController {
         }
     }
     
+    private boolean isMobileDevice(HttpServletRequest request) {
+        String userAgent = request.getHeader("User-Agent");
+        return userAgent.contains("Android") || userAgent.contains("iPhone");        
+    }
 }

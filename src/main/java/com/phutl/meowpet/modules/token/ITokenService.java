@@ -11,4 +11,5 @@ public interface ITokenService {
     public void saveToken(String token, TokenType tokenType, User user, LocalDateTime expirationDate);
     public Optional<Token> findByToken(String token);
     public void revokeToken(String token);
+    public void addToken(User user, String token, boolean isMobileDevice);
 }

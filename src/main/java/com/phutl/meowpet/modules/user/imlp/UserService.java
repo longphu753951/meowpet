@@ -1,12 +1,8 @@
 package com.phutl.meowpet.modules.user.imlp;
 
 import java.util.Optional;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,10 +16,7 @@ import com.phutl.meowpet.modules.user.IUserService;
 import com.phutl.meowpet.modules.user.UserRepository;
 import com.phutl.meowpet.modules.user.dto.UserDTO;
 import com.phutl.meowpet.modules.user.dto.UserLoginDTO;
-import com.phutl.meowpet.shared.common.Role;
-
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 
 @Service
 public class UserService implements IUserService {
