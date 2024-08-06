@@ -11,4 +11,5 @@ import com.phutl.meowpet.modules.database.User;
 public interface TokenRepository extends JpaRepository<Token, Long> {
     Optional<Token> findByToken(String token);
     List<Token> findByUser(User user);
+    Token findByRefreshToken(String refreshToken);
 }

@@ -8,8 +8,7 @@ import com.phutl.meowpet.modules.database.User;
 import com.phutl.meowpet.shared.common.TokenType;
 
 public interface ITokenService {
-    public void saveToken(String token, TokenType tokenType, User user, LocalDateTime expirationDate);
-    public Optional<Token> findByToken(String token);
+    Token refreshToken(String refreshToken, User user) throws Exception;
     public void revokeToken(String token);
-    public void addToken(User user, String token, boolean isMobileDevice);
+    public Token addToken(User user, String token, boolean isMobileDevice);
 }

@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/meowpetdb
     username: postgres
-    password: 475632
+    password: qwpo1234
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
@@ -31,6 +31,7 @@ logging:
     com.meowpet: DEBUG
 jwt:
   expiration: 2592000
+  expiration-refresh-token: 5184000
   secretKey: bongvamapladoibanthanbongmautrangconmapmaudenbongdammapvamapkhochuhu
 api:
   prefix: /api/v1

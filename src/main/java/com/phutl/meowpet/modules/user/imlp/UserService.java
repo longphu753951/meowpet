@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.phutl.meowpet.core.components.JwtTokenUtil;
 import com.phutl.meowpet.core.exceptions.DataNotFoundException;
+import com.phutl.meowpet.modules.database.Token;
 import com.phutl.meowpet.modules.database.User;
+import com.phutl.meowpet.modules.token.TokenRepository;
 import com.phutl.meowpet.modules.user.IUserService;
 import com.phutl.meowpet.modules.user.UserRepository;
 import com.phutl.meowpet.modules.user.dto.UserDTO;
@@ -29,6 +31,9 @@ public class UserService implements IUserService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private TokenRepository tokenRepository;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -87,13 +92,29 @@ public class UserService implements IUserService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userLoginDTO.getUsername(), userLoginDTO.getPassword());
         authenticationManager.authenticate(authenticationToken);
-        return this.jwtTokenUtil.generateToken(existingUser).toString();
+        return jwtTokenUtil.generateToken(existingUser).toString();
     }
 
     @Override
-    public String generateRefreshToken(UserLoginDTO userLoginDTO) throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'generateRefreshToken'");
+    public User getUserDetailFromRefreshToken(String refreshToken) throws Exception {
+        Token existingToken = tokenRepository.findByRefreshToken(refreshToken);
+        String email = jwtTokenUtil.extractEmail(existingToken.getToken());
+        return getUserByEmail(email);
+    }
+
+    @Override
+    public User getUserDetailFromToken(String token) throws Exception {
+       if(jwtTokenUtil.isTokenExpired(token)){
+           throw new Exception("Token is expired");
+       }
+       String email = jwtTokenUtil.extractEmail(token);
+       Optional<User> optionalUser = userRepository.findByEmail(email);
+       if(optionalUser.isPresent()) {
+        return optionalUser.get();
+       }
+       else {
+              throw new DataNotFoundException("User not found");
+       }
     }
 
 }

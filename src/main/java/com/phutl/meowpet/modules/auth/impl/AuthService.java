@@ -29,30 +29,17 @@ public class AuthService implements IAuthService {
     public String generateAccessToken(User user) {
         String accessToken = jwtTokenUtil.generateToken(user);
         LocalDateTime expirationDate = LocalDateTime.now().plusMinutes(15); // Set access token expiry time
-        tokenService.saveToken(accessToken, TokenType.ACCESS, user, expirationDate);
+        // tokenService.saveToken(accessToken, TokenType.ACCESS, user, expirationDate);
         return accessToken;
     }
 
     @Override
     public String generateRefreshToken(User user) {
         String refreshToken = jwtTokenUtil.generateToken(user); // Generate refresh token using jwtTokenUtil
-    LocalDateTime expirationDate = LocalDateTime.now().plusDays(30); // Set refresh token expiry time
-    tokenService.saveToken(refreshToken, TokenType.REFRESH, user, expirationDate);
+        LocalDateTime expirationDate = LocalDateTime.now().plusDays(30); // Set refresh token expiry time
         return refreshToken;
     }
 
-    @Override
-    public String refreshAccessToken(String refreshToken) throws Exception {
-        Optional<Token> optionalToken = tokenService.findByToken(refreshToken);
-        if (optionalToken.isEmpty() || optionalToken.get().isRevoked() || optionalToken.get().isExpired()) {
-            throw new Exception("Invalid or expired refresh token");
-        }
-
-        Token existingToken = optionalToken.get();
-        User user = existingToken.getUser();
-        tokenService.revokeToken(refreshToken);
-
-        return generateAccessToken(user);
-    }
+    
 
 }
