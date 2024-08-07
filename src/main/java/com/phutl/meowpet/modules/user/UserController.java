@@ -56,10 +56,20 @@ public class UserController {
             if (!userDTO.getPassword().equals(userDTO.getRetypePassword())) {
                 return ResponseEntity.badRequest().body("Password and retype password are not the same");
             }
-            userService.createUser(userDTO);
-            return ResponseEntity.ok("Register successfully");
+            userService.register(userDTO);
+            return ResponseEntity.ok("OTP sent to your email");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/confirm-registration")
+    public ResponseEntity<String> confirmRegistration(@RequestBody UserDTO userRegisterDTO, @RequestParam String otp) {
+        try {
+            userService.confirmOtpAndRegister(userRegisterDTO, otp);
+            return ResponseEntity.ok("User registered successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
         }
     }
 

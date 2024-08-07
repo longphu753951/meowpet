@@ -25,6 +25,17 @@ spring:
     user:
       name: longphu
       password: 123456
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: tranfu1999@gmail.com
+    password: kgwu cthd ccwl zefx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 logging:
   level:
     org.springframework: INFO

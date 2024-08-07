@@ -32,7 +32,6 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/api/v1/users/register").hasRole(Role.ADMIN.name())
                         .requestMatchers("**", String.format("%s/healthcheck/**", apiPrefix)).permitAll()
                         .requestMatchers("/api/v1/actuator/health").permitAll());
         return http.build();

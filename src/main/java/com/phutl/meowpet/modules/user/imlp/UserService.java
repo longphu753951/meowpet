@@ -13,11 +13,15 @@ import com.phutl.meowpet.core.components.JwtTokenUtil;
 import com.phutl.meowpet.core.exceptions.DataNotFoundException;
 import com.phutl.meowpet.modules.database.Token;
 import com.phutl.meowpet.modules.database.User;
+import com.phutl.meowpet.modules.email.EmailService;
+import com.phutl.meowpet.modules.otp.OtpService;
 import com.phutl.meowpet.modules.token.TokenRepository;
 import com.phutl.meowpet.modules.user.IUserService;
 import com.phutl.meowpet.modules.user.UserRepository;
 import com.phutl.meowpet.modules.user.dto.UserDTO;
 import com.phutl.meowpet.modules.user.dto.UserLoginDTO;
+import com.phutl.meowpet.shared.exceptions.InvalidOtpException;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -38,12 +42,18 @@ public class UserService implements IUserService {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    @Autowired
+    private OtpService otpService;
+
+    @Autowired
+    private EmailService emailService;
+
     @Override
     @Transactional
-    public User createUser(UserDTO userDTO) {
-        String email = userDTO.getEmail();
-        if (userRepository.existsByEmail(email)) {
-            throw new DataIntegrityViolationException("email has already exists");
+    public User confirmOtpAndRegister(UserDTO userDTO, String otp) {
+        // Validate the OTP
+        if (!otpService.verifyOTP(userDTO.getEmail(), otp)) {
+            throw new InvalidOtpException("Invalid OTP");
         }
 
         // Ensure roles are set, default to Role.USER if not provided
@@ -104,17 +114,26 @@ public class UserService implements IUserService {
 
     @Override
     public User getUserDetailFromToken(String token) throws Exception {
-       if(jwtTokenUtil.isTokenExpired(token)){
-           throw new Exception("Token is expired");
-       }
-       String email = jwtTokenUtil.extractEmail(token);
-       Optional<User> optionalUser = userRepository.findByEmail(email);
-       if(optionalUser.isPresent()) {
-        return optionalUser.get();
-       }
-       else {
-              throw new DataNotFoundException("User not found");
-       }
+        if (jwtTokenUtil.isTokenExpired(token)) {
+            throw new Exception("Token is expired");
+        }
+        String email = jwtTokenUtil.extractEmail(token);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        } else {
+            throw new DataNotFoundException("User not found");
+        }
     }
 
+    @Transactional
+    @Override
+    public void register(UserDTO userDTO) {
+        String email = userDTO.getEmail();
+        if (userRepository.existsByEmail(email)) {
+            throw new DataIntegrityViolationException("email has already exists");
+        }
+        String otp = otpService.generateOTP(email);
+        emailService.sendOtp(userDTO.getEmail(), otp);
+    }
 }
