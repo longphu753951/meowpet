@@ -10,14 +10,14 @@ import com.phutl.meowpet.core.components.JwtTokenUtil;
 import com.phutl.meowpet.modules.auth.IAuthService;
 import com.phutl.meowpet.modules.database.Token;
 import com.phutl.meowpet.modules.database.User;
-import com.phutl.meowpet.modules.token.ITokenService;
+import com.phutl.meowpet.modules.token.TokenService;
 import com.phutl.meowpet.modules.user.UserRepository;
 import com.phutl.meowpet.shared.common.TokenType;
 
 public class AuthService implements IAuthService {
 
     @Autowired
-    private ITokenService tokenService;
+    private TokenService tokenService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;

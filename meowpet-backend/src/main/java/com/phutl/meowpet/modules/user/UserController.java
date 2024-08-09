@@ -7,11 +7,12 @@ import com.phutl.meowpet.core.components.JwtTokenUtil;
 import com.phutl.meowpet.core.filters.JwtTokenFilter;
 import com.phutl.meowpet.modules.database.Token;
 import com.phutl.meowpet.modules.database.User;
+import com.phutl.meowpet.modules.token.TokenService;
 import com.phutl.meowpet.modules.token.dto.RefreshTokenDTO;
-import com.phutl.meowpet.modules.token.impl.TokenService;
+import com.phutl.meowpet.modules.token.impl.TokenServiceImpl;
 import com.phutl.meowpet.modules.user.dto.UserDTO;
 import com.phutl.meowpet.modules.user.dto.UserLoginDTO;
-import com.phutl.meowpet.modules.user.imlp.UserService;
+import com.phutl.meowpet.modules.user.imlp.UserServiceImpl;
 import com.phutl.meowpet.shared.responses.ResponseObject;
 import com.phutl.meowpet.shared.responses.user.LoginResponse;
 
@@ -78,7 +79,7 @@ public class UserController {
             HttpServletRequest request) {
         try {
             String token = userService.login(userLoginDTO);
-            User user = userService.getUserByEmail(userLoginDTO.getUsername());
+            User user = userService.getUserDetailFromToken(token);
             Token newToken = tokenService.addToken(user, token, isMobileDevice(request));
             return ResponseEntity.ok(createLoginResponse("Login successfully", user, newToken));
         } catch (Exception e) {
@@ -100,8 +101,7 @@ public class UserController {
     public ResponseEntity<?> getUserDetail(@RequestHeader("Authorization") String token) {
         try {
             String jwtToken = token.substring(7);
-            String email = jwtTokenUtil.extractEmail(jwtToken);
-            User user = userService.getUserByEmail(email);
+            User user = userService.getUserDetailFromToken(jwtToken);
             return ResponseEntity.ok(user);
 
         } catch (Exception e) {

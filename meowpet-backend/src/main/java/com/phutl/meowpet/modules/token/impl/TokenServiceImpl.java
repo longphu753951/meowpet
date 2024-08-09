@@ -12,13 +12,13 @@ import com.phutl.meowpet.core.components.JwtTokenUtil;
 import com.phutl.meowpet.core.exceptions.DataNotFoundException;
 import com.phutl.meowpet.modules.database.Token;
 import com.phutl.meowpet.modules.database.User;
-import com.phutl.meowpet.modules.token.ITokenService;
 import com.phutl.meowpet.modules.token.TokenRepository;
+import com.phutl.meowpet.modules.token.TokenService;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class TokenService implements ITokenService {
+public class TokenServiceImpl implements TokenService {
     private static final int MAX_TOKENS = 3;
     @Autowired
     private TokenRepository tokenRepository;

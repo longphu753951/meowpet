@@ -16,7 +16,7 @@ import com.phutl.meowpet.modules.database.User;
 import com.phutl.meowpet.modules.email.EmailService;
 import com.phutl.meowpet.modules.otp.OtpService;
 import com.phutl.meowpet.modules.token.TokenRepository;
-import com.phutl.meowpet.modules.user.IUserService;
+import com.phutl.meowpet.modules.user.UserService;
 import com.phutl.meowpet.modules.user.UserRepository;
 import com.phutl.meowpet.modules.user.dto.UserDTO;
 import com.phutl.meowpet.modules.user.dto.UserLoginDTO;
@@ -25,7 +25,7 @@ import com.phutl.meowpet.shared.exceptions.InvalidOtpException;
 import jakarta.transaction.Transactional;
 
 @Service
-public class UserService implements IUserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
