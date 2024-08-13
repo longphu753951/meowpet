@@ -10,23 +10,22 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "breeds")
-@Data
+@Table(name = "characters")
 @Builder
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class Breed extends BaseEntity {
+@NoArgsConstructor
+public class Character extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
@@ -34,10 +33,14 @@ public class Breed extends BaseEntity {
     @Column(name = "description", nullable = false, length = 255)
     private String description;
 
-    @Column(name = "image", nullable = false, length = 255)
-    private String image;
+    @Column(name = "icon", nullable = false, length = 255)
+    private String icon;
 
     @ManyToOne
-    @JoinColumn(name = "pet_type_id")
-    private PetType petType;
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
+
+    @ManyToOne
+    @JoinColumn(name = "breed_id")
+    private Breed breed;
 }
