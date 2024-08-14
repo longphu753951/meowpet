@@ -1,6 +1,4 @@
-package com.phutl.meowpet.modules.petType.dto;
-
-import org.springframework.web.multipart.MultipartFile;
+package com.phutl.meowpet.modules.character.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,17 +14,13 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
-public class PetTypeDTO {
+@Setter
+public class CreateCharacterDTO {
     @JsonProperty("name")
     @NotBlank(message = "Name is required")
     private String name;
 
     @JsonProperty("description")
-    @NotBlank(message = "Description is required")
     private String description;
-
-    private MultipartFile image;
-    private String imageUrl;
 }

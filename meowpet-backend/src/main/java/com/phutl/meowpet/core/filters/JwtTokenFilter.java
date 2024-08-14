@@ -81,10 +81,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 //health check
                 Pair.of(String.format("%s/actuator/**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/healthcheck/**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/characters/**", apiPrefix), "POST"),
+                Pair.of(String.format("%s/characters/**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/characters/**", apiPrefix), "DELETE"),
 
-
-                Pair.of(String.format("%s/products", apiPrefix), "GET"),
-                Pair.of(String.format("%s/categories", apiPrefix), "GET"),
+                Pair.of(String.format("%s/petTypes/**", apiPrefix), "POST"),
+                Pair.of(String.format("%s/petTypes/**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/confirm-registration", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/login", apiPrefix), "POST"),

@@ -21,7 +21,6 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "pets")
-@Data
 @Builder
 @Getter
 @Setter

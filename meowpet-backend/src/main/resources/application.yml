@@ -14,6 +14,10 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   data:
     mongodb:
       uri: mongodb+srv://longphu753951:fSetC1S8Dn0z59Fz@cluster0.ewijxkf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
