@@ -37,6 +37,6 @@ public class SocialAccount {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name="customer_id")
+    private Customer customer;
 }

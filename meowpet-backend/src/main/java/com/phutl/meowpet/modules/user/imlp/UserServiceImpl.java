@@ -58,16 +58,13 @@ public class UserServiceImpl implements UserService {
 
         // Ensure roles are set, default to Role.USER if not provided
         // convert userDTO => user
-        User newUser = User.builder()
+        T newUser = (T) T.builder()
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
                 .phoneNumber(userDTO.getPhoneNumber())
                 .password(userDTO.getPassword())
                 .email(userDTO.getEmail())
-                .address(userDTO.getAddress())
                 .roles(userDTO.getRoles())
-                .facebookAccountId(userDTO.getFacebookAccountId())
-                .googleAccountId(userDTO.getGoogleAccountId())
                 .build();
         // Check if having accountId, passwork will be unrequired
         if (userDTO.getFacebookAccountId() == 0 && userDTO.getGoogleAccountId() == 0) {
@@ -94,11 +91,11 @@ public class UserServiceImpl implements UserService {
         }
         // check password
         User existingUser = optionalUser.get();
-        if (existingUser.getFacebookAccountId() == 0 && existingUser.getGoogleAccountId() == 0) {
-            if (!passwordEncoder.matches(userLoginDTO.getPassword(), existingUser.getPassword())) {
-                throw new BadCredentialsException("Invalid email/password");
-            }
+        // if (existingUser.getFacebookAccountId() == 0 && existingUser.getGoogleAccountId() == 0) {
+        if (!passwordEncoder.matches(userLoginDTO.getPassword(), existingUser.getPassword())) {
+            throw new BadCredentialsException("Invalid email/password");
         }
+        // }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userLoginDTO.getUsername(), userLoginDTO.getPassword());
         authenticationManager.authenticate(authenticationToken);
