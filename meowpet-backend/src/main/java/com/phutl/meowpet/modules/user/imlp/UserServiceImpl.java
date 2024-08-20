@@ -25,7 +25,7 @@ import com.phutl.meowpet.shared.exceptions.InvalidOtpException;
 import jakarta.transaction.Transactional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public abstract class UserServiceImpl<T> implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -50,32 +50,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User confirmOtpAndRegister(UserDTO userDTO, String otp) {
+    public Boolean confirmOtpAndRegister(UserDTO userDTO, String otp) {
         // Validate the OTP
         if (!otpService.verifyOTP(userDTO.getEmail(), otp)) {
             throw new InvalidOtpException("Invalid OTP");
         }
-
-        // Ensure roles are set, default to Role.USER if not provided
-        // convert userDTO => user
-        User newUser = User.builder()
-                .firstName(userDTO.getFirstName())
-                .lastName(userDTO.getLastName())
-                .phoneNumber(userDTO.getPhoneNumber())
-                .password(userDTO.getPassword())
-                .email(userDTO.getEmail())
-                .address(userDTO.getAddress())
-                .roles(userDTO.getRoles())
-                .facebookAccountId(userDTO.getFacebookAccountId())
-                .googleAccountId(userDTO.getGoogleAccountId())
-                .build();
-        // Check if having accountId, passwork will be unrequired
-        if (userDTO.getFacebookAccountId() == 0 && userDTO.getGoogleAccountId() == 0) {
-            String password = userDTO.getPassword();
-            String encodedPassword = passwordEncoder.encode(password);
-            newUser.setPassword(encodedPassword);
-        }
-        return userRepository.save(newUser);
+        return true;
+        // // Ensure roles are set, default to Role.USER if not provided
+        // // convert userDTO => user
+        // User newUser = User.builder()
+        //         .firstName(userDTO.getFirstName())
+        //         .lastName(userDTO.getLastName())
+        //         .phoneNumber(userDTO.getPhoneNumber())
+        //         .password(userDTO.getPassword())
+        //         .email(userDTO.getEmail())
+        //         .roles(userDTO.getRoles())
+        //         .build();
+        // // Check if having accountId, passwork will be unrequired
+        // // if (userDTO.getFacebookAccountId() == 0 && userDTO.getGoogleAccountId() == 0) {
+        //     String password = userDTO.getPassword();
+        //     String encodedPassword = passwordEncoder.encode(password);
+        //     newUser.setPassword(encodedPassword);
+        // // }
+        // return userRepository.save(newUser);
     }
 
     public User getUserByEmail(String email) {
@@ -94,11 +91,11 @@ public class UserServiceImpl implements UserService {
         }
         // check password
         User existingUser = optionalUser.get();
-        if (existingUser.getFacebookAccountId() == 0 && existingUser.getGoogleAccountId() == 0) {
+        // if (existingUser.getFacebookAccountId() == 0 && existingUser.getGoogleAccountId() == 0) {
             if (!passwordEncoder.matches(userLoginDTO.getPassword(), existingUser.getPassword())) {
                 throw new BadCredentialsException("Invalid email/password");
             }
-        }
+        // }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userLoginDTO.getUsername(), userLoginDTO.getPassword());
         authenticationManager.authenticate(authenticationToken);

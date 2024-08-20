@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.phutl.meowpet.core.components.JwtTokenUtil;
 import com.phutl.meowpet.core.filters.JwtTokenFilter;
+import com.phutl.meowpet.modules.customer.dto.CreateCustomerDTO;
 import com.phutl.meowpet.modules.database.Token;
 import com.phutl.meowpet.modules.database.User;
 import com.phutl.meowpet.modules.token.TokenService;

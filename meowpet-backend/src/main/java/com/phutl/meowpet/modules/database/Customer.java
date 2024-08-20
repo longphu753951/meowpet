@@ -18,14 +18,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Customer extends User {
+    @Column(length = 255)
+    private String address;
+
+    @Column(length = 10)
+    private String gender;
+
+    @Column(length = 255)
+    private String bio;
+
     @Column(name = "facebook_account_id")
     private int facebookAccountId;
 
     @Column(name = "google_account_id")
     private int googleAccountId;
-
-    @Column(length = 255)
-    private String address;
 
     @ManyToMany
     @JoinTable(name = "customer_pets", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "pet_id"))
