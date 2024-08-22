@@ -3,18 +3,13 @@ package com.phutl.meowpet.modules.customer.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import com.phutl.meowpet.modules.database.Customer;
 import com.phutl.meowpet.modules.customer.CustomerRepository;
 import com.phutl.meowpet.modules.customer.CustomerService;
 import com.phutl.meowpet.modules.customer.dto.CreateCustomerDTO;
-import com.phutl.meowpet.modules.database.Customer;
 import com.phutl.meowpet.modules.email.EmailService;
 import com.phutl.meowpet.modules.otp.OtpService;
 import com.phutl.meowpet.modules.user.imlp.UserServiceImpl;
-import com.phutl.meowpet.shared.common.Role;
-
-import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
 
 @Service
 public class CustomerServiceImpl extends UserServiceImpl<Customer> implements CustomerService {
@@ -40,20 +35,19 @@ public class CustomerServiceImpl extends UserServiceImpl<Customer> implements Cu
 
     @Override
     public Customer confirmOtpAndRegister(CreateCustomerDTO customerDTO, String otp) {
-        Customer newUser = super.confirmOtpAndRegister(customerDTO, otp);
-        newUser.setRoles(customerDTO.getRoles());
-        newUser.setAddress(customerDTO.getAddress());
-        newUser.setBio(customerDTO.getBio());
-        newUser.setFacebookAccountId(customerDTO.getFacebookAccountId());
-        newUser.setGoogleAccountId(customerDTO.getGoogleAccountId());
-
+        Customer newCustomer = super.confirmOtpAndRegister(customerDTO, otp, Customer.class);
+        newCustomer.setRoles(customerDTO.getRoles());
+        newCustomer.setAddress(customerDTO.getAddress());
+        newCustomer.setBio(customerDTO.getBio());
+        newCustomer.setFacebookAccountId(customerDTO.getFacebookAccountId());
+        newCustomer.setGoogleAccountId(customerDTO.getGoogleAccountId());
         // Check if having accountId, passwork will be unrequired
         if (customerDTO.getFacebookAccountId() == 0 && customerDTO.getGoogleAccountId() == 0) {
             String password = customerDTO.getPassword();
             String encodedPassword = passwordEncoder.encode(password);
-            newUser.setPassword(encodedPassword);
+            newCustomer.setPassword(encodedPassword);
         }
-        return customerRepository.save(newUser);
+        return customerRepository.save(newCustomer);
     }
 
     @Override

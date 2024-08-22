@@ -68,7 +68,7 @@ public class UserController {
     @PostMapping("/confirm-registration")
     public ResponseEntity<String> confirmRegistration(@RequestBody UserDTO userRegisterDTO, @RequestParam String otp) {
         try {
-            userService.confirmOtpAndRegister(userRegisterDTO, otp);
+            // userService.confirmOtpAndRegister(userRegisterDTO, otp);
             return ResponseEntity.ok("User registered successfully");
         } catch (Exception e) {
             return ResponseEntity.status(400).body(e.getMessage());

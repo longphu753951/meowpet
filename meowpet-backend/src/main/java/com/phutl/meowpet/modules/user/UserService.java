@@ -6,7 +6,7 @@ import com.phutl.meowpet.modules.user.dto.UserDTO;
 import com.phutl.meowpet.modules.user.dto.UserLoginDTO;
 
 public interface UserService<T extends User> {
-    <T extends User> T confirmOtpAndRegister(UserDTO userDTO, String otp) throws Exception;
+    <T extends User> T confirmOtpAndRegister(UserDTO userDTO, String otp, Class<T> clazz) throws Exception;
     String login(UserLoginDTO userLoginDTO) throws Exception;
     User getUserDetailFromRefreshToken(String refreshToken) throws Exception;
     User getUserDetailFromToken(String token) throws Exception;

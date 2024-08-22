@@ -2,21 +2,27 @@ package com.phutl.meowpet.modules.database;
 
 import java.util.List;
 
+import com.phutl.meowpet.shared.common.Rank;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Customer extends User {
     @Column(length = 255)
     private String address;
@@ -36,4 +42,7 @@ public class Customer extends User {
     @ManyToMany
     @JoinTable(name = "customer_pets", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "pet_id"))
     private List<Pet> pets;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Membership membership;
 }

@@ -50,20 +50,24 @@ public abstract class UserServiceImpl<T extends User> implements UserService<T> 
 
     @Override
     @Transactional
-    public <T extends User> T confirmOtpAndRegister(UserDTO userDTO, String otp) {
+    public <T extends User> T confirmOtpAndRegister(UserDTO userDTO, String otp, Class<T> clazz) {
         // Validate the OTP
         if (!otpService.verifyOTP(userDTO.getEmail(), otp)) {
             throw new InvalidOtpException("Invalid OTP");
         }
 
-        User newUser = User.builder()
-                .firstName(userDTO.getFirstName())
-                .lastName(userDTO.getLastName())
-                .phoneNumber(userDTO.getPhoneNumber())
-                .password(userDTO.getPassword())
-                .email(userDTO.getEmail())
-                .roles(userDTO.getRoles())
-                .build();
+        T newUser;
+        try {
+            newUser = clazz.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create a new instance of " + clazz.getName(), e);
+        }
+        newUser.setFirstName(userDTO.getFirstName());
+        newUser.setLastName(userDTO.getLastName());
+        newUser.setPhoneNumber(userDTO.getPhoneNumber());
+        newUser.setPassword(userDTO.getPassword());
+        newUser.setEmail(userDTO.getEmail());
+        newUser.setRoles(userDTO.getRoles());
         // // Ensure roles are set, default to Role.USER if not provided
         // // convert userDTO => user
         // User newUser = User.builder()

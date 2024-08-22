@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.phutl.meowpet.shared.common.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +15,6 @@ import lombok.Setter;
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
-@Builder
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +23,7 @@ public class User extends BaseEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false) 
     private String firstName;
 
     @Column(name = "last_name", nullable = false)
@@ -44,11 +42,9 @@ public class User extends BaseEntity implements UserDetails {
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
     @Column(name = "status", nullable = false, length = 20)
-    @Builder.Default
     private String status = "ACTIVE";
 
     @Override
