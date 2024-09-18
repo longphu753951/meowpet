@@ -2,14 +2,19 @@ spring:
   application:
     name: meowpet
   datasource:
-    url: jdbc:postgresql://localhost:5432/meowpetdb
-    username: postgres
+    url: jdbc:postgresql://localhost:5433/petpaldbdev
+    username: phutl
     password: qwpo1234
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      # delete: delete the schema and data when the application is stopped
+      # create: create the schema and data when the application is started
+      # create-drop: create the schema and data when the application is started and drop the schema and data when the application is stopped
+      # validate: validate the schema and data when the application is started
+      # update: update the schema and data when the application is started
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true

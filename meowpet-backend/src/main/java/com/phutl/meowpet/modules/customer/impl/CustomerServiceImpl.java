@@ -8,6 +8,7 @@ import com.phutl.meowpet.modules.customer.CustomerRepository;
 import com.phutl.meowpet.modules.customer.CustomerService;
 import com.phutl.meowpet.modules.customer.dto.CreateCustomerDTO;
 import com.phutl.meowpet.modules.email.EmailService;
+import com.phutl.meowpet.modules.membership.MembershipService;
 import com.phutl.meowpet.modules.otp.OtpService;
 import com.phutl.meowpet.modules.user.imlp.UserServiceImpl;
 
@@ -19,6 +20,9 @@ public class CustomerServiceImpl extends UserServiceImpl<Customer> implements Cu
 
     @Autowired
     private OtpService otpService;
+
+    @Autowired
+    private MembershipService membershipService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -34,13 +38,14 @@ public class CustomerServiceImpl extends UserServiceImpl<Customer> implements Cu
     }
 
     @Override
-    public Customer confirmOtpAndRegister(CreateCustomerDTO customerDTO, String otp) {
+    public Customer confirmOtpAndRegister(CreateCustomerDTO customerDTO, String otp) throws Exception {
         Customer newCustomer = super.confirmOtpAndRegister(customerDTO, otp, Customer.class);
         newCustomer.setRoles(customerDTO.getRoles());
         newCustomer.setAddress(customerDTO.getAddress());
         newCustomer.setBio(customerDTO.getBio());
         newCustomer.setFacebookAccountId(customerDTO.getFacebookAccountId());
         newCustomer.setGoogleAccountId(customerDTO.getGoogleAccountId());
+        membershipService.createMembership(newCustomer);
         // Check if having accountId, passwork will be unrequired
         if (customerDTO.getFacebookAccountId() == 0 && customerDTO.getGoogleAccountId() == 0) {
             String password = customerDTO.getPassword();
