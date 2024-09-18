@@ -8,5 +8,5 @@ import com.phutl.meowpet.modules.database.Customer;
 public interface CustomerService {
     Object getCoupon(String token) throws Exception;
     void register(CreateCustomerDTO createCustomerDTO) throws Exception;
-    Customer confirmOtpAndRegister(CreateCustomerDTO customerDTO, String otp) ;
+    Customer confirmOtpAndRegister(CreateCustomerDTO customerDTO, String otp) throws Exception ;
 }
