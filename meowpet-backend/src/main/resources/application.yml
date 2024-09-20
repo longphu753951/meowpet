@@ -2,7 +2,7 @@ spring:
   application:
     name: meowpet
   datasource:
-    url: jdbc:postgresql://postgresql-petpal-container:5432/petpaldbdev
+    url: jdbc:postgresql://petpal-db-container:5432/petpaldbdev
     username: phutl
     password: qwpo1234
     driver-class-name: org.postgresql.Driver
@@ -64,6 +64,3 @@ management:
       base-path: /api/v1/actuator
       exposure:
         include: "health, info"
-
-server:
-  port: 8085

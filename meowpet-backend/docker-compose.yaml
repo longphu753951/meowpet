@@ -1,44 +1,57 @@
+#version: là phiên bản của docker-compose, bản mới nhất hiện tại là 3.8
 version: '3.8'
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Docker Compose reference guide at
-# https://docs.docker.com/go/compose-spec-reference/
 
-# Here the instructions define your application as a service called "server".
-# This service is built from the Dockerfile in the current directory.
-# You can add other services your application may depend on here, such as a
-# database or a cache. For examples, see the Awesome Compose repository:
-# https://github.com/docker/awesome-compose
+#Các container sẽ được khai báo trong services như là:
+# - server: là tên của container server (Có thể đặt tên khác như là backend, api, ... tùy vào mục đích)
+# - db: là tên của container db (Có thể đặt tên khác như là database, postgres, ... tùy vào mục đích)
+
 services:
-  server:
-    build:
-      context: .
-    ports:
-      - 8088:8080
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      - DATABASE_URL=jdbc:postgresql://localhost:5434/petpaldbdev
   db:
     image: postgres:latest
+    container_name: petpal-db-container
     restart: always
+
+    # volumes: là nơi lưu trữ dữ liệu của database
+    # - postgresql-springboot-data:/var/lib/postgresql/data: lưu trữ dữ liệu của database trong thư mục db-data
+    # - postgresql-springboot-config-daemon:/etc/postgresql: lưu trữ cấu hình của database trong thư mục db-config
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - postgresql-springboot-data:/var/lib/postgresql/data
+      - postgresql-springboot-config-daemon:/etc/postgresql/conf.d
     environment:
       - POSTGRES_DB=petpaldbdev
       - POSTGRES_USER=phutl
       - POSTGRES_PASSWORD=qwpo1234
     ports:
-      - 5434:5432
-    healthcheck:
-      test: [ "CMD", "pg_isready" ] 
-      interval: 1m30s
-      timeout: 30s
-      retries: 5
-      start_period: 30s
-volumes:
-  db-data:
+      - 5433:5432
+    networks:
+      - backend
+  server:
+    # image: là tên của image mà container sẽ sử dụng
+    # - longphu753951/petpal-be-image:latest: là image được build từ Dockerfile trong thư mục meowpet-backend
+    # container_name: là tên của container
+    # ports: là cổng mà container sẽ sử dụng
+    # volumes: là nơi lưu trữ dữ liệu của container
+    # networks: là mạng mà container sẽ sử dụng
+    image: longphu753951/petpal-be-image:latest
+    container_name: petpal-server-container
+    ports:
+      - 8085:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://petpal-db-container:5432/petpaldbdev
+      SPRING_DATASOURCE_USERNAME: phutl
+      SPRING_DATASOURCE_PASSWORD: qwpo1234
+    volumes:
+      - ./:/app
+    networks:
+      - backend
 
-secrets:
-  db-password:
-    file: db/password.txt
+#create network
+networks:
+  backend:
+
+#volumes: là nơi lưu trữ dữ liệu của container
+# - postgresql-springboot-data: lưu trữ dữ liệu của database
+# - postgresql-springboot-config-daemon: lưu trữ cấu hình của database
+volumes:
+  postgresql-springboot-data:
+  postgresql-springboot-config-daemon:

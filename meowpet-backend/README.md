@@ -1,11 +1,5 @@
-## Use profile
-
-application-{profile}.yaml
-applecation-{profile}.properties
-
-profile = dev, test, pre, prod , rel
-
-how to build container for postgresql:
+### BUILD CONTAINER FOR POSTGRESQL AND SPRING BOOT WITH DATABASE
+## How to build container for postgresql:
 ```sh
 docker run --rm -d \
 --name postgresql-petpal-container \
@@ -59,3 +53,6 @@ longphu753951/pet-pal-backend-image
 --network petpal-app-network: Connect the container to the specified Docker network (petpal-app-network). This allows the container to communicate with other containers on the same network.
 -p 8085:8085: Map port 8085 on the host to port 8085 in the container. This allows you to access the Spring Boot application on localhost:8085 from your host machine.
 longphu753951/pet-pal-backend-image: The name of the Docker image to use for creating the container. This should be the image you built earlier.
+
+
+### REPLACE ALL COMMAND WITH DOCKER COMPOSER
