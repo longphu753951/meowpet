@@ -1,4 +1,4 @@
-package com.phutl.meowpet.core.filters;
+package com.phutl.meowpet.filters;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.lang.NonNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.phutl.meowpet.core.components.JwtTokenUtil;
+import com.phutl.meowpet.components.JwtTokenUtil;
 import com.phutl.meowpet.entity.User;
 
 import jakarta.servlet.FilterChain;

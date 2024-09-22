@@ -1,4 +1,4 @@
-package com.phutl.meowpet.modules.user;
+package com.phutl.meowpet.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

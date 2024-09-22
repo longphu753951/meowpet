@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.phutl.meowpet.modules.customer.CreateCustomerDTO;
-import com.phutl.meowpet.modules.customer.impl.CustomerServiceImpl;
-import com.phutl.meowpet.modules.user.UserDTO;
+import com.phutl.meowpet.dto.customer.CreateCustomerDTO;
+import com.phutl.meowpet.services.CustomerService;
 
 import jakarta.validation.Valid;
 

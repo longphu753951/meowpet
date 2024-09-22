@@ -1,8 +1,7 @@
 package com.phutl.meowpet.services;
 
-import com.phutl.meowpet.exceptions.DataNotFoundException;
-import com.phutl.meowpet.modules.user.UserDTO;
-import com.phutl.meowpet.modules.user.UserLoginDTO;
+import com.phutl.meowpet.dto.user.UserDTO;
+import com.phutl.meowpet.dto.user.UserLoginDTO;
 import com.phutl.meowpet.entity.User;
 
 public interface UserService<T extends User> {

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.phutl.meowpet.entity.Customer;
-import com.phutl.meowpet.modules.customer.CreateCustomerDTO;
+import com.phutl.meowpet.dto.customer.CreateCustomerDTO;
 import com.phutl.meowpet.services.CustomerService;
 import com.phutl.meowpet.repository.CustomerRepository;
 import com.phutl.meowpet.services.EmailService;

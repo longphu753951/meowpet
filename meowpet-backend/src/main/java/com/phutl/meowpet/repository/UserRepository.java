@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.stereotype.Repository;
 
 import com.phutl.meowpet.entity.User;
-import com.phutl.meowpet.modules.user.UserLoginDTO;
+import com.phutl.meowpet.dto.user.UserLoginDTO;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

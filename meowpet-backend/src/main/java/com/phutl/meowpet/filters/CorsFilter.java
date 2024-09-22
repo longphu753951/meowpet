@@ -1,4 +1,4 @@
-package com.phutl.meowpet.core.filters;
+package com.phutl.meowpet.filters;
 
 import java.io.IOException;
 

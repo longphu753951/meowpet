@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.phutl.meowpet.entity.PetType;
-import com.phutl.meowpet.modules.petType.PetTypeDTO;
+import com.phutl.meowpet.dto.petType.PetTypeDTO;
 import com.phutl.meowpet.services.PetTypeService;
 import com.phutl.meowpet.repository.PetTypeRepository;
 

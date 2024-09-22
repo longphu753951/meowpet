@@ -3,7 +3,7 @@ package com.phutl.meowpet.services;
 import org.springframework.stereotype.Service;
 
 import com.phutl.meowpet.entity.Customer;
-import com.phutl.meowpet.modules.customer.CreateCustomerDTO;
+import com.phutl.meowpet.dto.customer.CreateCustomerDTO;
 
 public interface CustomerService {
     Object getCoupon(String token) throws Exception;

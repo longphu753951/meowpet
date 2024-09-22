@@ -1,4 +1,4 @@
-package com.phutl.meowpet.core.utils;
+package com.phutl.meowpet.utils;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;

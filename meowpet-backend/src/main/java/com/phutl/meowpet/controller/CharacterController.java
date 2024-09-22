@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.phutl.meowpet.dto.character.CreateCharacterDTO;
+import com.phutl.meowpet.services.CharacterService;
 
 import jakarta.validation.Valid;
 

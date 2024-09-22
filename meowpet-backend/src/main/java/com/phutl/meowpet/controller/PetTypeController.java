@@ -22,7 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.phutl.meowpet.entity.PetType;
-import com.phutl.meowpet.modules.petType.PetTypeDTO;
+import com.phutl.meowpet.services.PetTypeService;
+import com.phutl.meowpet.dto.petType.PetTypeDTO;
 
 import jakarta.validation.Valid;
 

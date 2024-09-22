@@ -1,5 +1,18 @@
 ### BUILD CONTAINER FOR POSTGRESQL AND SPRING BOOT WITH DATABASE
 ## How to build container for postgresql:
+## Use profile
+
+application-{profile}.yaml
+applecation-{profile}.properties
+
+profile = dev, test, pre, prod , rel
+
+how to build network:
+```sh
+docker network create petpal-app-network
+```
+
+how to build container for postgresql:
 ```sh
 docker run --rm -d \
 --name postgresql-petpal-container \

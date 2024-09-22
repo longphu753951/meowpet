@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.phutl.meowpet.components.JwtTokenUtil;
 import com.phutl.meowpet.exceptions.DataNotFoundException;
-import com.phutl.meowpet.modules.user.UserDTO;
-import com.phutl.meowpet.modules.user.UserLoginDTO;
+import com.phutl.meowpet.dto.user.UserDTO;
+import com.phutl.meowpet.dto.user.UserLoginDTO;
 import com.phutl.meowpet.entity.Token;
 import com.phutl.meowpet.entity.User;
 import com.phutl.meowpet.services.EmailService;

@@ -3,23 +3,19 @@ package com.phutl.meowpet.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.phutl.meowpet.core.components.JwtTokenUtil;
-import com.phutl.meowpet.core.filters.JwtTokenFilter;
+import com.phutl.meowpet.components.JwtTokenUtil;
 import com.phutl.meowpet.entity.Token;
 import com.phutl.meowpet.entity.User;
-import com.phutl.meowpet.modules.customer.CreateCustomerDTO;
-import com.phutl.meowpet.modules.token.RefreshTokenDTO;
-import com.phutl.meowpet.modules.user.UserDTO;
-import com.phutl.meowpet.modules.user.UserLoginDTO;
+import com.phutl.meowpet.dto.token.RefreshTokenDTO;
+import com.phutl.meowpet.dto.user.UserDTO;
+import com.phutl.meowpet.dto.user.UserLoginDTO;
 import com.phutl.meowpet.services.TokenService;
-import com.phutl.meowpet.services.impl.TokenServiceImpl;
-import com.phutl.meowpet.services.impl.UserServiceImpl;
+import com.phutl.meowpet.services.UserService;
 import com.phutl.meowpet.shared.responses.ResponseObject;
 import com.phutl.meowpet.shared.responses.user.LoginResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
