@@ -25,6 +25,22 @@ services:
       - 5433:5432
     networks:
       - backend
+  mongodb-container:
+    image: mongo:latest
+    container_name: petpal-mongodb-container
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+  redis-container:
+    image: redis:latest
+    container_name: petpal-redis-container
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - backend
   server:
     # image: là tên của image mà container sẽ sử dụng
     # - longphu753951/petpal-be-image:latest: là image được build từ Dockerfile trong thư mục meowpet-backend
