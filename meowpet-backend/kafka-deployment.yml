@@ -15,7 +15,7 @@ services:
       #2888: Port được sử dụng cho giao tiếp giữa các máy chủ Zookeeper
       #3888: Port được sử dụng cho giao tiếp giữa các client và máy chủ Zookeeper.
     networks:
-      - meowpet-network
+      - petpal-backend-network
 
   zookeeper-02:
     image: confluentinc/cp-zookeeper:7.5.3
@@ -28,7 +28,7 @@ services:
       ZOOKEEPER_SERVER_ID: 2
       ZOOKEEPER_SERVERS: zookeeper-01:2888:3888;zookeeper-02:2888:3888;zookeeper-03:2888:3888
     networks:
-      - meowpet-network
+      - petpal-backend-network
   
   zookeeper-03:
     image: confluentinc/cp-zookeeper:7.5.3
@@ -41,7 +41,7 @@ services:
       ZOOKEEPER_SERVER_ID: 3
       ZOOKEEPER_SERVERS: zookeeper-01:2888:3888;zookeeper-02:2888:3888;zookeeper-03:2888:3888
     networks:
-      - meowpet-network
+      - petpal-backend-network
 
   kafka-broker-01:
     image: confluentinc/cp-kafka:7.5.3
@@ -57,9 +57,9 @@ services:
       #INTERNAL://kafka-broker-01:19092: Listener nội bộ cho giao tiếp giữa các container Kafka
       #EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092: Listener bên ngoài cho phép client bên ngoài truy cập Kafka thông qua port 9092 trên máy chủ
       #DOCKER://host.docker.internal:29092: Listener cho phép giao tiếp giữa các container Kafka trong cluster docker
-
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
       #Thiết lập giao thức bảo mật cho từng listener, trong trường hợp này tất cả đều dùng SSL.
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:SSL,EXTERNAL:SSL,DOCKER:SSL 
+      #KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:SSL,EXTERNAL:SSL,DOCKER:SSL 
       #INTERNAL:SSL: Listener nội bộ sử dụng giao thức bảo mật SSL
       #EXTERNAL:SSL: Listener bên ngoài sử dụng giao thức bảo mật SSL
       #DOCKER:SSL: Listener giữa các container sử dụng giao thức bảo mật SSL     
@@ -95,3 +95,34 @@ services:
 
       #Cho phép mọi người truy cập nếu không có ACL nào được tìm thấy
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
+    networks:
+      - petpal-backend-network
+    depends_on:
+      - zookeeper-01
+      - zookeeper-02
+      - zookeeper-03
+  kafka-broker-02:
+    image: confluentinc/cp-kafka:7.5.3
+    hostname: kafka-broker-02
+    container_name: kafka-broker-02
+    ports:
+      - "9093:9093"
+      - "29093:29093"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-broker-02:19093,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9093,DOCKER://host.docker.internal:29093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper-01:2181,zookeeper-02:2182,zookeeper-03:2183"
+      KAFKA_BROKER_ID: 2
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+      KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
+    networks:
+      - petpal-backend-network
+    depends_on:
+      - zookeeper-01
+      - zookeeper-02
+      - zookeeper-03
+networks:
+  petpal-backend-network:
+    driver: bridge

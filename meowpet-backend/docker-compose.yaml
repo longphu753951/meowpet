@@ -64,7 +64,8 @@ services:
 #create network
 networks:
   backend:
-
+    driver: bridge
+    name: petpal-backend-network
 #volumes: là nơi lưu trữ dữ liệu của container
 # - postgresql-springboot-data: lưu trữ dữ liệu của database
 # - postgresql-springboot-config-daemon: lưu trữ cấu hình của database
